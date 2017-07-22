@@ -1,29 +1,31 @@
 // Import the page's CSS. Webpack will know what to do with it.
-import "../stylesheets/approval.css";
+// import "../stylesheets/approval.css";
 
 // Import libraries we need.
-import { default as Web3} from 'web3';
-import { default as contract } from 'truffle-contract'
+// import { default as Web3} from 'web3';
+// import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
+// import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
-var MetaCoin = contract(metacoin_artifacts);
+// var MetaCoin = contract(metacoin_artifacts);
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
 // For application bootstrapping, check out window.addEventListener below.
 var accounts;
 var account;
+var address;
 
 window.App = {
   start: function() {
     var self = this;
 
     // Bootstrap the MetaCoin abstraction for Use.
-    MetaCoin.setProvider(web3.currentProvider);
+    // MetaCoin.setProvider(web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
+
     web3.eth.getAccounts(function(err, accs) {
       if (err != null) {
         alert("There was an error fetching your accounts.");
@@ -37,14 +39,8 @@ window.App = {
 
       accounts = accs;
       account = accounts[0];
-
-      self.refreshBalance();
+      account_address = account.address
     });
-  },
-
-  setStatus: function(message) {
-    var status = document.getElementById("status");
-    status.innerHTML = message;
   },
 
   refreshBalance: function() {
@@ -83,9 +79,21 @@ window.App = {
       self.setStatus("Error sending coin; see log.");
     });
   }
+
+  sendClaim: function() {
+    function compileInfo(){
+      var company = document.getElementById("company");
+      var description = document.getElementById("description");
+      var amount = document.getElementById("amount");
+      account_address + company + description + amount;
+    };
+    var data = window.crypto.compileInfo
+    self.proposeClaim(data);
+  }
+
+
 };
 
-proposeClaim
 
 window.addEventListener('load', function() {
   // Checking if Web3 has been injected by the browser (Mist/MetaMask)
