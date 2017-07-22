@@ -1,11 +1,27 @@
-body {
-  margin-left: 25%;
-  margin-right: 25%;
+.claim {
+/*  margin-left: 25%;
+  margin-right: 25%;*/
   margin-top: 10%;
-  font-family: "Open Sans", sans-serif;
+  margin-bottom: 20%;
+  font-family: "Futura", sans-serif;
+  background: -webkit-linear-gradient(#c7f9e0, #f7f7ef, #f7cf94); /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(#c7f9e0, #f7f7ef, #f7cf94); /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(#c7f9e0, #f7f7ef, #f7cf94); /* For Firefox 3.6 to 15 */
+      background: linear-gradient(#c7f9e0, #f7f7ef, #f7cf94); /* Standard syntax (must be last) */
 }
 
-label {
+.approval {
+/*  margin-left: 25%;
+  margin-right: 25%;*/
+  margin-top: 10%;
+  margin-bottom: 20%;
+  font-family: "Futura", sans-serif;
+  background: -webkit-linear-gradient(#f7cf94, #f7f7ef, #c7f9e0); /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(#f7cf94, #f7f7ef, #c7f9e0); /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(#f7cf94, #f7f7ef, #c7f9e0); /* For Firefox 3.6 to 15 */
+      background: linear-gradient(#f7cf94, #f7f7ef, #c7f9e0); /* Standard syntax (must be last) */
+}
+/*label {
   display: inline-block;
   width: 100px;
 }
@@ -19,9 +35,9 @@ input {
 button {
   font-size: 16px;
   padding: 5px;
-}
+}*/
 
-h1, h2 {
+/*h1, h2 {
   display: inline-block;
   vertical-align: middle;
   margin-top: 0px;
@@ -37,7 +53,7 @@ h3 {
   font-weight: normal;
   color: #AAA;
   font-size: 24px;
-}
+}*/
 
 .black {
   color: black;
