@@ -51,6 +51,9 @@ contract Claims {
     }
 
     function acceptClaim(address customer, bytes32 claimIdHash, uint claimNum) {
+        if (uniqueClaimIdToClaimStruct[claimIdHash].status != ClaimStatus.Pending) {
+            throw;
+        }
         if (sha3(sha3(customer, msg.sender), claimNum) == claimIdHash) {
             uniqueClaimIdToClaimStruct[claimIdHash].status = ClaimStatus.Accepted;
             uint acceptedClaims = customerToNumberOfAcceptedClaims[customer];
@@ -59,6 +62,9 @@ contract Claims {
     }
 
     function rejectClaim(address customer, bytes32 claimIdHash, uint claimNum) {
+        if (uniqueClaimIdToClaimStruct[claimIdHash].status != ClaimStatus.Pending) {
+            throw;
+        }
         if (sha3(sha3(customer, msg.sender), claimNum) == claimIdHash) {
             uniqueClaimIdToClaimStruct[claimIdHash].status = ClaimStatus.Rejected;
             uint rejectedClaims = customerToNumberOfRejectedClaims[customer];
