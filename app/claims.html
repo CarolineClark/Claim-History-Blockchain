@@ -15,8 +15,8 @@
     <h2></h2>
     <br><label for="">The claim number</label><div id="claim_number"></div>
     <br><label for="">The claim ID</label><div id="claim_id"></div>
-    <br><label for="amount">Amount:</label><div id="amount"></div>
-    <br><label for="Description">Tell us more about your claim:</label><div id="description"></div>
+    <br><label for="">Amount:</label><div id="claim_amount"></div>
+    <br><label for="">Status:</label><div id="description"></div>
     <br><br><button class="btn btn-success" id="send" onclick="App.acceptClaim()">Approve the claim</button>
     <br><br><button class="btn btn-danger" id="send" onclick="App.rejectClaim()">Reject the claim</button>
     <br><br>
@@ -26,10 +26,10 @@
   </div>
 </body>
 <script>
-// function fetch_data(){
-//   App.getLastClaimIdHash();
-// };
+function setView() {
+  App.view = 1;
+};
 
-// window.onload = fetch_data();
+window.onload = setView();
 </script>
 </html>

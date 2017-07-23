@@ -6,6 +6,7 @@ contract Claims {
     struct Claim {
         bytes32 hash;
         ClaimStatus status;
+        string amount;
     }
 
     bytes32 lastClaimIdHash;
@@ -20,7 +21,7 @@ contract Claims {
     function Claims() {
     }
 
-    function proposeClaim(address company, bytes32 claimDataHash) returns(bytes32, uint) {
+    function proposeClaim(address company, bytes32 claimDataHash, string amount) returns(bytes32, uint) {
         bytes32 customerCompanyHash = sha3(msg.sender, company);
         customerCompanyHashV = customerCompanyHash;
         uint numberOfClaims = relationshipHashToNumberOfClaims[customerCompanyHash];
@@ -29,7 +30,7 @@ contract Claims {
         relationshipHashToNumberOfClaims[customerCompanyHash] = numberOfClaims;
 
         bytes32 claimIdHash = sha3(customerCompanyHash, numberOfClaims);
-        uniqueClaimIdToClaimStruct[claimIdHash] = Claim(claimDataHash, ClaimStatus.Pending);
+        uniqueClaimIdToClaimStruct[claimIdHash] = Claim(claimDataHash, ClaimStatus.Pending, amount);
         lastClaimIdHash = claimIdHash;
         return (claimIdHash, numberOfClaims);
     }
@@ -48,6 +49,10 @@ contract Claims {
 
     function getClaimStatus(bytes32 claimIdHash) constant returns(ClaimStatus) {
         return uniqueClaimIdToClaimStruct[claimIdHash].status;
+    }
+
+    function getClaimAmount(bytes32 claimIdHash) constant returns(string) {
+        return uniqueClaimIdToClaimStruct[claimIdHash].amount;
     }
 
     function getLastClaimIdHash() constant returns(bytes32) {
