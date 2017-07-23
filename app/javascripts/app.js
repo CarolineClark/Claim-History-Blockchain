@@ -108,12 +108,19 @@ window.App = {
     console.log(company_account_address);
     Claim.deployed().then(function(instance) { 
       claim = instance ;
-      return claim.proposeClaim(company_account_address, data, {from: account_address});
+      return claim.proposeClaim(company_account_address, data, {from: account_address, gas: 400000 });
     }).then(function(value){
       console.log("claim proposed!" + value);
     }).catch(function(e) {
       console.log(e);
     });
+  },
+
+  getLastClaimNumber: function(){
+    Claim.deployed().then(function(instance) {
+      claim = instance; 
+      return claim.getLastClaimNumber()
+    })
   }
 };
 
