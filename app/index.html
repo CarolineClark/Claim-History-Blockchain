@@ -14,7 +14,7 @@
     <h1>Welcome to Claim Your Insurance</h1>
     <br>
     <h2>Fill in your claim information</h2>
-    <br><label for="customer_id">Your customer ID</label><input type="text" class="form-control" id="customer_id_input" placeholder="eg. 123-456-789"></input>
+    <br><label for=>Your customer ID</label><div id="propose_customer_id"></div>
     <br><label for="amount">Amount:</label><input type="text" class="form-control col-lg-2" id="amount_input" placeholder="e.g. 94.99"></input>
     <br><label for="Description">Tell us more about your claim:</label><textarea class="form-control col-lg-2" rows="5" id="description_input" placeholder="45 minutes physiotherapy session for football injury"></textarea>
 
@@ -34,4 +34,10 @@
     <span class="hint"></span>
   </div>
 </body>
+<script>
+function setView() {
+  App.view = 0;
+};
+window.onload = setView();
+</script>
 </html>

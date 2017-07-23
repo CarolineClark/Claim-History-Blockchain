@@ -14,8 +14,8 @@ var Claim = contract(claims_artifacts);
 // As your needs grow you will likely need to change its form and structure.
 // For application bootstrapping, check out window.addEventListener below.
 var accounts;
-var account;
-var address;
+//var account;
+//var address;
 var account_address;
 var company_account_address;
 var customer_company_hash;
@@ -54,10 +54,15 @@ window.App = {
 
       accounts = accs;
       account_address = accounts[0];
+      if (App.view == 0) {
+        document.getElementById('propose_customer_id').innerHTML = account_address;
+      }
       company_account_address = accounts[1];
       console.log(accounts)
-      App.getLastClaimIdHash();
-      App.getCustomerCompanyHash();
+      if (App.view == 1){
+        App.getLastClaimIdHash();
+        App.getCustomerCompanyHash();
+      }
     });
   },
 
@@ -100,17 +105,17 @@ window.App = {
   proposeClaim: function() {
     var self = this;
     var claim;
+    var amount = document.getElementById("amount_input");
 
     function compileInfo(){
       var description = document.getElementById("description_input");
-      var amount = document.getElementById("amount_input");
-      return description + amount;
+      return description;
     };
     var data = new TextEncoder('utf-8').encode(compileInfo()).join("");
     console.log(company_account_address);
     Claim.deployed().then(function(instance) { 
       claim = instance ;
-      return claim.proposeClaim(company_account_address, data, {from: account_address, gas: 400000 });
+      return claim.proposeClaim(company_account_address, data, String(amount), {from: account_address, gas: 400000 });
     }).then(function(value){
       console.log("claim proposed!" + value);
     }).catch(function(e) {
@@ -128,7 +133,8 @@ window.App = {
       customer_company_hash = value;
       return claim.getLastClaimNumber(customer_company_hash, {from: company_account_address, gas: 400000 });
     }).then(function(value){
-      document.getElementById("claim_number").innerHTML = value;
+      console.log(value);
+      document.getElementById("claim_number").innerHTML = value ;
     })
     .catch(function(e) {
       console.log(e);
@@ -138,14 +144,21 @@ window.App = {
   getLastClaimIdHash: function(){
     var self = this;
     var claim;
+    var claim_id_hash;
     Claim.deployed().then(function(instance) {
       claim = instance; 
       return claim.getLastClaimIdHash({from: company_account_address, gas: 400000 });
     }).then(function(value){
       document.getElementById("claim_id").innerHTML = value;
-      return claim.getClaimStatus({from: company_account_address, gas: 400000 })
+      claim_id_hash = value;
+      return claim.getClaimStatus(claim_id_hash, {from: company_account_address, gas: 400000 });
     }).then(function(value){
-      document.getElementById("description").innerHTML = value;
+      var status = value == 0 ? "pending" : (value == 1 ? "accepted" : "rejected"); 
+      document.getElementById("description").innerHTML = status;
+      return claim.getClaimAmount(claim_id_hash, {from: company_account_address, gas: 400000 });
+    }).then(function(value){
+      console.log(value);
+      document.getElementById("claim_amount").innerHTML = value.toString();
     })
     .catch(function(e) {
       console.log(e);
