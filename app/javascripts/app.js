@@ -52,9 +52,9 @@ window.App = {
       //       });
 
       accounts = accs;
-      account = accounts[0];
-      account_address = account.address;
-      company_account_address = account[1].address;
+      account_address = accounts[0];
+      company_account_address = accounts[1];
+      console.log(accounts)
     });
   },
 
@@ -103,10 +103,12 @@ window.App = {
       var amount = document.getElementById("amount_input");
       return account_address + company_account_address;
     };
-    var data = window.crypto.compileInfo
+    //var data = window.crypto.compileInfo
+    var data = new TextEncoder('utf-8').encode("message").join("");
+    console.log(company_account_address);
     Claim.deployed().then(function(instance) { 
       claim = instance ;
-      return claim.proposeClaim(company_account_address, data);
+      return claim.proposeClaim(company_account_address, data, {from: account_address});
     }).then(function(value){
       console.log("claim proposed!" + value);
     }).catch(function(e) {
