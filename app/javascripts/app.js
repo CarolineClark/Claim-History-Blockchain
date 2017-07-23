@@ -79,7 +79,8 @@ window.App = {
     });
   },
 
-  sendClaim: function() {
+  proposeClaim: function() {
+    var self = this;
     function compileInfo(){
       var company = document.getElementById("company");
       var description = document.getElementById("description");
