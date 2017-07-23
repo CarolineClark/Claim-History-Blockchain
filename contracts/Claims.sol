@@ -38,7 +38,11 @@ contract Claims {
         return relationshipHashToNumberOfClaims[customerCompanyHash];
     }
 
-    function getCustomerCompanyHash() constant returns(bytes32) {
+    function getCustomerCompanyHash(address customer, address company) returns(bytes32) {
+        return sha3(customer, company);
+    }
+
+    function getCustomerCompanyHashV() constant returns(bytes32) {
         return customerCompanyHashV;
     }
 
