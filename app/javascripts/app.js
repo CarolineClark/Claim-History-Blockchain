@@ -78,9 +78,10 @@ window.App = {
       console.log(e);
       self.setStatus("Error sending coin; see log.");
     });
-  }
+  },
 
-  sendClaim: function() {
+  proposeClaim: function() {
+    var self = this;
     function compileInfo(){
       var company = document.getElementById("company");
       var description = document.getElementById("description");
