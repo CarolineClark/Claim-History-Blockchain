@@ -43,19 +43,18 @@ window.App = {
     });
   },
 
-  refreshBalance: function() {
+  getNumberOfAcceptedClaimsHistory: function() {
     var self = this;
 
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.getBalance.call(account, {from: account});
+    var claim;
+    Claim.deployed().then(function(instance) {
+      claim = instance;
+      return claim.getNumberOfAcceptedClaimsHistory.call(account, {from: account});
     }).then(function(value) {
-      var balance_element = document.getElementById("balance");
-      balance_element.innerHTML = value.valueOf();
+      console.log("Accepted claims = " + value);
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      self.setStatus("Error getting accpeted claims; see log.");
     });
   },
 
@@ -78,7 +77,7 @@ window.App = {
       console.log(e);
       self.setStatus("Error sending coin; see log.");
     });
-  }
+  },
 
   sendClaim: function() {
     function compileInfo(){
@@ -90,8 +89,6 @@ window.App = {
     var data = window.crypto.compileInfo
     self.proposeClaim(data);
   }
-
-
 };
 
 
