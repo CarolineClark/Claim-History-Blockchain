@@ -97,21 +97,21 @@ window.App = {
   proposeClaim: function() {
     var self = this;
     var claim;
-    Claim.deployed().then(function(instance) { 
-      claim = instance ;
-      return claim.proposeClaim(xxxx);
-    }).then(function(value){
-      console.log("claim proposed!" + value);
-    }).catch(function(e) {
-      console.log(e);
-    });
+
     function compileInfo(){
       var description = document.getElementById("description_input");
       var amount = document.getElementById("amount_input");
       return account_address + company_account_address;
     };
     var data = window.crypto.compileInfo
-    self.proposeClaim(company_account_address, data);
+    Claim.deployed().then(function(instance) { 
+      claim = instance ;
+      return claim.proposeClaim(company_account_address, data);
+    }).then(function(value){
+      console.log("claim proposed!" + value);
+    }).catch(function(e) {
+      console.log(e);
+    });
   }
 };
 
