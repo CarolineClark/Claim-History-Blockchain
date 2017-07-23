@@ -21,11 +21,10 @@ window.App = {
   start: function() {
     var self = this;
 
-    // Bootstrap the MetaCoin abstraction for Use.
-    // MetaCoin.setProvider(web3.currentProvider);
+    // Bootstrap the Claim abstraction for Use.
+    Claim.setProvider(web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
-
     web3.eth.getAccounts(function(err, accs) {
       if (err != null) {
         alert("There was an error fetching your accounts.");
@@ -43,42 +42,41 @@ window.App = {
     });
   },
 
-  refreshBalance: function() {
+  getNumberOfAcceptedClaimsHistory: function() {
     var self = this;
 
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.getBalance.call(account, {from: account});
+    var claim;
+    Claim.deployed().then(function(instance) {
+      claim = instance;
+      return claim.getNumberOfAcceptedClaimsHistory.call(account, {from: account});
     }).then(function(value) {
-      var balance_element = document.getElementById("balance");
-      balance_element.innerHTML = value.valueOf();
+      console.log("Accepted claims = " + value);
     }).catch(function(e) {
       console.log(e);
-      self.setStatus("Error getting balance; see log.");
+      self.setStatus("Error getting accpeted claims; see log.");
     });
   },
 
-  sendCoin: function() {
-    var self = this;
+  // sendCoin: function() {
+  //   var self = this;
 
-    var amount = parseInt(document.getElementById("amount").value);
-    var receiver = document.getElementById("receiver").value;
+  //   var amount = parseInt(document.getElementById("amount").value);
+  //   var receiver = document.getElementById("receiver").value;
 
-    this.setStatus("Initiating transaction... (please wait)");
+  //   this.setStatus("Initiating transaction... (please wait)");
 
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.sendCoin(receiver, amount, {from: account});
-    }).then(function() {
-      self.setStatus("Transaction complete!");
-      self.refreshBalance();
-    }).catch(function(e) {
-      console.log(e);
-      self.setStatus("Error sending coin; see log.");
-    });
-  },
+  //   var meta;
+  //   MetaCoin.deployed().then(function(instance) {
+  //     meta = instance;
+  //     return meta.sendCoin(receiver, amount, {from: account});
+  //   }).then(function() {
+  //     self.setStatus("Transaction complete!");
+  //     self.refreshBalance();
+  //   }).catch(function(e) {
+  //     console.log(e);
+  //     self.setStatus("Error sending coin; see log.");
+  //   });
+  // },
 
   proposeClaim: function() {
     var self = this;
@@ -91,8 +89,6 @@ window.App = {
     var data = window.crypto.compileInfo
     self.proposeClaim(data);
   }
-
-
 };
 
 
