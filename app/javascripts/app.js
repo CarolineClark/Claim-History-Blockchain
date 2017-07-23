@@ -1,12 +1,12 @@
 // Import the page's CSS. Webpack will know what to do with it.
-// import "../stylesheets/approval.css";
+import "../stylesheets/app.css";
 
 // Import libraries we need.
 // import { default as Web3} from 'web3';
 // import { default as contract } from 'truffle-contract'
 
 // Import our contract artifacts and turn them into usable abstractions.
-// import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
+import claims_artifacts from '../../build/contracts/Claims.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 // var MetaCoin = contract(metacoin_artifacts);
@@ -16,13 +16,16 @@
 var accounts;
 var account;
 var address;
+var account_address;
+var company_account_address;
+var Claim;
 
 window.App = {
   start: function() {
     var self = this;
 
     // Bootstrap the Claim abstraction for Use.
-    Claim.setProvider(web3.currentProvider);
+    //Claim.setProvider(web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
     web3.eth.getAccounts(function(err, accs) {
@@ -36,9 +39,22 @@ window.App = {
         return;
       }
 
+      $.getJSON('../../build/contracts/Claims.json', function(data) {
+              console.log("loading claims json");
+              // Get the necessary contract artifact file and instantiate it with truffle-contract.
+              var ClaimArtifact = data;
+              App.contracts.Claim = TruffleContract(AdoptionArtifact);
+
+              // Set the provider for our contract.
+              App.contracts.Claim.setProvider(App.web3Provider);
+              Claim = App.contracts.Claim;
+              console.log(App.contracts)
+            });
+
       accounts = accs;
       account = accounts[0];
-      account_address = account.address
+      account_address = account.address;
+      company_account_address = account[1].address;
     });
   },
 
@@ -80,14 +96,22 @@ window.App = {
 
   proposeClaim: function() {
     var self = this;
+    var claim;
+    Claim.deployed().then(function(instance) { 
+      claim = instance ;
+      return claim.proposeClaim(xxxx);
+    }).then(function(value){
+      console.log("claim proposed!" + value);
+    }).catch(function(e) {
+      console.log(e);
+    });
     function compileInfo(){
-      var company = document.getElementById("company");
-      var description = document.getElementById("description");
-      var amount = document.getElementById("amount");
-      account_address + company + description + amount;
+      var description = document.getElementById("description_input");
+      var amount = document.getElementById("amount_input");
+      return account_address + company_account_address;
     };
     var data = window.crypto.compileInfo
-    self.proposeClaim(data);
+    self.proposeClaim(company_account_address, data);
   }
 };
 

@@ -4,8 +4,8 @@
   <title>Welcome to Claim Your Insurance</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link rel = "stylesheet" type = "text/css" href = "stylesheets/app.css" />
-  <script src="./javascripts/app.js"></script>
+  <link rel = "stylesheet" type = "text/css" href = "./stylesheets/app.css" />
+  <script src="./app.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -14,9 +14,9 @@
     <h1>Welcome to Claim Your Insurance</h1>
     <br>
     <h2>Fill in your claim information</h2>
-    <br><label for="customer_id">Your customer ID</label><input type="text" class="form-control" id="customer_id" placeholder="eg. 123-456-789"></input>
-    <br><label for="amount">Amount:</label><input type="text" class="form-control col-lg-2" id="amount" placeholder="e.g. 94.99"></input>
-    <br><label for="Description">Tell us more about your claim:</label><textarea class="form-control col-lg-2" rows="5" id="Description" placeholder="45 minutes physiotherapy session for football injury"></textarea>
+    <br><label for="customer_id">Your customer ID</label><input type="text" class="form-control" id="customer_id_input" placeholder="eg. 123-456-789"></input>
+    <br><label for="amount">Amount:</label><input type="text" class="form-control col-lg-2" id="amount_input" placeholder="e.g. 94.99"></input>
+    <br><label for="Description">Tell us more about your claim:</label><textarea class="form-control col-lg-2" rows="5" id="description_input" placeholder="45 minutes physiotherapy session for football injury"></textarea>
 
     <br><label for="receiver">Company</label><div class="dropdown">
     <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
@@ -27,7 +27,7 @@
       <li role="presentation"><a role="menuitem" tabindex="-1" href="#">BUPA</a></li>
     </ul>
   </div>
-    <br><br><button class="btn btn-success" id="send" onclick="App.sendClaim()">Send your claim!</button>
+    <br><br><button class="btn btn-success" id="send" onclick="App.proposeClaim()">Send your claim!</button>
     <br><br>
     <span id="status"></span>
     <br>
