@@ -105,10 +105,10 @@ window.App = {
   proposeClaim: function() {
     var self = this;
     var claim;
-    var amount = document.getElementById("amount_input");
-
+    var amount = document.getElementById("amount_input").value;
+    console.log(amount);
     function compileInfo(){
-      var description = document.getElementById("description_input");
+      var description = document.getElementById("description_input").value;
       return description;
     };
     var data = new TextEncoder('utf-8').encode(compileInfo()).join("");
