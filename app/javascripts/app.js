@@ -18,6 +18,7 @@ var account;
 var address;
 var account_address;
 var company_account_address;
+var customer_company_hash;
 
 window.App = {
   start: function() {
@@ -55,6 +56,8 @@ window.App = {
       account_address = accounts[0];
       company_account_address = accounts[1];
       console.log(accounts)
+      App.getLastClaimIdHash();
+      App.getCustomerCompanyHash();
     });
   },
 
@@ -101,10 +104,9 @@ window.App = {
     function compileInfo(){
       var description = document.getElementById("description_input");
       var amount = document.getElementById("amount_input");
-      return account_address + company_account_address;
+      return description + amount;
     };
-    //var data = window.crypto.compileInfo
-    var data = new TextEncoder('utf-8').encode("message").join("");
+    var data = new TextEncoder('utf-8').encode(compileInfo()).join("");
     console.log(company_account_address);
     Claim.deployed().then(function(instance) { 
       claim = instance ;
@@ -116,12 +118,69 @@ window.App = {
     });
   },
 
-  getLastClaimNumber: function(){
+  getCustomerCompanyHash: function(){
+    var self = this;
+    var claim;
     Claim.deployed().then(function(instance) {
       claim = instance; 
-      return claim.getLastClaimNumber()
+      return claim.getCustomerCompanyHash({from: company_account_address, gas: 400000 });
+    }).then(function(value){
+      customer_company_hash = value;
+      return claim.getLastClaimNumber(customer_company_hash, {from: company_account_address, gas: 400000 });
+    }).then(function(value){
+      document.getElementById("claim_number").innerHTML = value;
     })
-  }
+    .catch(function(e) {
+      console.log(e);
+    });
+  },
+
+  getLastClaimIdHash: function(){
+    var self = this;
+    var claim;
+    Claim.deployed().then(function(instance) {
+      claim = instance; 
+      return claim.getLastClaimIdHash({from: company_account_address, gas: 400000 });
+    }).then(function(value){
+      document.getElementById("claim_id").innerHTML = value;
+      return claim.getClaimStatus({from: company_account_address, gas: 400000 })
+    }).then(function(value){
+      document.getElementById("description").innerHTML = value;
+    })
+    .catch(function(e) {
+      console.log(e);
+    });
+  },
+
+  acceptClaim: function() {
+     var self = this;
+     var claim;
+     var claimIdHash = document.getElementById("claim_id").innerHTML;
+     var claimNum = document.getElementById("claim_number").innerHTML;
+     Claim.deployed().then(function(instance) {
+       claim = instance ;
+       return claim.acceptClaim(account_address, claimIdHash, claimNum, {from: company_account_address, gas: 400000 });
+     }).then(function(value){
+       console.log("claim accepted!" + value);
+     }).catch(function(e) {
+       console.log(e);
+     });
+   },
+
+   rejectClaim: function() {
+     var self = this;
+     var claim;
+     var claimIdHash = document.getElementById("claim_id").innerHTML;
+     var claimNum = document.getElementById("claim_number").innerHTML;
+     Claim.deployed().then(function(instance) {
+       claim = instance ;
+       return claim.rejectClaim(account_address, claimIdHash, claimNum, {from: company_account_address, gas: 400000 });
+     }).then(function(value){
+       console.log("claim rejected!" + value);
+     }).catch(function(e) {
+       console.log(e);
+     });
+   }
 };
 
 
