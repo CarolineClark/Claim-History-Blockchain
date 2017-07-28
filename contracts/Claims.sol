@@ -9,9 +9,6 @@ contract Claims {
         string amount;
     }
 
-    bytes32 lastClaimIdHash;
-    bytes32 customerCompanyHashV;
-
     mapping (bytes32 => Claim) uniqueClaimIdToClaimStruct;
     mapping (bytes32 => uint) relationshipHashToNumberOfClaims;
 
@@ -23,7 +20,6 @@ contract Claims {
 
     function proposeClaim(address company, bytes32 claimDataHash, string amount) returns(bytes32, uint) {
         bytes32 customerCompanyHash = sha3(msg.sender, company);
-        customerCompanyHashV = customerCompanyHash;
         uint numberOfClaims = relationshipHashToNumberOfClaims[customerCompanyHash];
 
         numberOfClaims = numberOfClaims + 1;
@@ -31,7 +27,6 @@ contract Claims {
 
         bytes32 claimIdHash = sha3(customerCompanyHash, numberOfClaims);
         uniqueClaimIdToClaimStruct[claimIdHash] = Claim(claimDataHash, ClaimStatus.Pending, amount);
-        lastClaimIdHash = claimIdHash;
         return (claimIdHash, numberOfClaims);
     }
 
@@ -39,12 +34,12 @@ contract Claims {
         return relationshipHashToNumberOfClaims[customerCompanyHash];
     }
 
-    // function getCustomerCompanyHash(address customer, address company) returns(bytes32) {
-    //     return sha3(customer, company);
-    // }
+    function calculateCustomerCompanyHash(address customer, address company) constant returns(bytes32) {
+        return sha3(customer, company);
+    }
 
-    function getCustomerCompanyHash() constant returns(bytes32) {
-        return customerCompanyHashV;
+    function calculateClaimIdHash(bytes32 customerCompanyHash, uint claimNum) constant returns(bytes32) {
+        return sha3(customerCompanyHash, claimNum);
     }
 
     function getClaimStatus(bytes32 claimIdHash) constant returns(ClaimStatus) {
@@ -53,10 +48,6 @@ contract Claims {
 
     function getClaimAmount(bytes32 claimIdHash) constant returns(string) {
         return uniqueClaimIdToClaimStruct[claimIdHash].amount;
-    }
-
-    function getLastClaimIdHash() constant returns(bytes32) {
-        return lastClaimIdHash;
     }
 
     function acceptClaim(address customer, bytes32 claimIdHash, uint claimNum) {
