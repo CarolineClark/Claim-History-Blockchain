@@ -88,17 +88,20 @@ window.App = {
   getCustomerCompanyInformation: function(account_address, company_account_address){
     var self = this;
     var claim;
+    var customer_company_hash;
+    var claim_id_hash;
     Claim.deployed().then(function(instance) {
       claim = instance;
       return claim.calculateCustomerCompanyHash(account_address, company_account_address, {from: company_account_address, gas: 400000 });
-    }).then(function(customer_company_hash){
-      return claim.getLastClaimNumber(customer_company_hash, {from: company_account_address, gas: 400000 });
     }).then(function(value){
-      document.getElementById("claim_number").innerHTML = value ;
-      return claim.calculateClaimIdHash(customer_company_hash, value, {from: company_account_address, gas: 400000 });
+      customer_company_hash = value;
+      return claim.getLastClaimNumber(customer_company_hash, {from: company_account_address, gas: 400000 });
+    }).then(function(claim_number){
+      document.getElementById("claim_number").innerHTML = claim_number;
+      return claim.calculateClaimIdHash(customer_company_hash, claim_number, {from: company_account_address, gas: 400000 });
     }).then(function(value) {
-      document.getElementById("claim_id").innerHTML = value;
       claim_id_hash = value;
+      document.getElementById("claim_id").innerHTML = claim_id_hash;
       return claim.getClaimStatus(claim_id_hash, {from: company_account_address, gas: 400000 });
     }).then(function(value){
       var status = value == 0 ? "pending" : (value == 1 ? "accepted" : "rejected");
